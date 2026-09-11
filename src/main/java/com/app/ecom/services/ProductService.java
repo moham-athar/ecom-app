@@ -41,7 +41,7 @@ public class ProductService {
     }
 
     public Optional<ProductResponse> fetchProduct(Long id) {
-        return productRepository.findById(id)
+        return productRepository.findByIdAndActiveTrue(id)
                 .map(this::mapToProductResponse);
     }
 
@@ -55,9 +55,14 @@ public class ProductService {
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    public List<ProductResponse> searchProduct(String name) {
+        return productRepository.searchProduct(name).stream()
+                .map(this::mapToProductResponse)
+                .toList();
+    }
+
     //DTOs
     private ProductResponse mapToProductResponse(Product savedProduct) {
-
         return ProductResponse.builder()
                 .id(savedProduct.getId())
                 .name(savedProduct.getName())
@@ -78,5 +83,4 @@ public class ProductService {
         product.setCategory(productRequest.getCategory());
         product.setImageUrl(productRequest.getImageUrl());
     }
-
 }

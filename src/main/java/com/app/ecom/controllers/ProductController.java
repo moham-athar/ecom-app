@@ -46,4 +46,9 @@ public class ProductController {
         return productService.setInactive(id);
 
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<ProductResponse>> searchProductByName(@RequestParam String name){
+        return ResponseEntity.ok(productService.searchProduct(name));
+    }
 }
